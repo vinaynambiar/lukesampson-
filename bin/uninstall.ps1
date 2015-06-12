@@ -1,9 +1,9 @@
 param($global)
 
-. "$psscriptroot\..\lib\core.ps1"
-. "$psscriptroot\..\lib\install.ps1"
-. "$psscriptroot\..\lib\versions.ps1"
-. "$psscriptroot\..\lib\manifest.ps1"
+. "$($env:SCOOPDIR)\..\lib\core.ps1"
+. "$($env:SCOOPDIR)\..\lib\install.ps1"
+. "$($env:SCOOPDIR)\..\lib\versions.ps1"
+. "$($env:SCOOPDIR)\..\lib\manifest.ps1"
 
 if($global -and !(is_admin)) {
 	"ERROR: you need admin rights to uninstall globally"; exit 1

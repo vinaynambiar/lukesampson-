@@ -13,10 +13,10 @@
 
 param($opt, $name, $command, $description)
 
-. "$psscriptroot\..\lib\core.ps1"
-. "$psscriptroot\..\lib\help.ps1"
-. "$psscriptroot\..\lib\config.ps1"
-. "$psscriptroot\..\lib\install.ps1"
+. "$($env:SCOOPDIR)\..\lib\core.ps1"
+. "$($env:SCOOPDIR)\..\lib\help.ps1"
+. "$($env:SCOOPDIR)\..\lib\config.ps1"
+. "$($env:SCOOPDIR)\..\lib\install.ps1"
 
 $script:config_alias = "alias"
 

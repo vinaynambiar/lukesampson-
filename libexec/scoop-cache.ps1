@@ -9,7 +9,7 @@
 #     scoop cache rm <app> to remove downloads for a specific app.
 param($cmd, $app)
 
-. "$psscriptroot\..\lib\help.ps1"
+. "$($env:SCOOPDIR)\..\lib\help.ps1"
 
 reset_aliases
 

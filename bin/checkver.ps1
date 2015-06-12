@@ -2,11 +2,11 @@
 # use $dir to specify a manifest directory to check from, otherwise ./bucket is used
 param($app, $dir)
 
-. "$psscriptroot\..\lib\core.ps1"
-. "$psscriptroot\..\lib\manifest.ps1"
-. "$psscriptroot\..\lib\config.ps1"
+. "$($env:SCOOPDIR)\..\lib\core.ps1"
+. "$($env:SCOOPDIR)\..\lib\manifest.ps1"
+. "$($env:SCOOPDIR)\..\lib\config.ps1"
 
-if(!$dir) { $dir = "$psscriptroot\..\bucket" }
+if(!$dir) { $dir = "$($env:SCOOPDIR)\..\bucket" }
 $dir = resolve-path $dir
 
 $search = "*"

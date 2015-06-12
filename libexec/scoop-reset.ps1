@@ -5,11 +5,11 @@
 # using one or the other.
 param($app)
 
-. "$psscriptroot\..\lib\core.ps1"
-. "$psscriptroot\..\lib\manifest.ps1"
-. "$psscriptroot\..\lib\help.ps1"
-. "$psscriptroot\..\lib\install.ps1"
-. "$psscriptroot\..\lib\versions.ps1"
+. "$($env:SCOOPDIR)\..\lib\core.ps1"
+. "$($env:SCOOPDIR)\..\lib\manifest.ps1"
+. "$($env:SCOOPDIR)\..\lib\help.ps1"
+. "$($env:SCOOPDIR)\..\lib\install.ps1"
+. "$($env:SCOOPDIR)\..\lib\versions.ps1"
 
 reset_aliases
 

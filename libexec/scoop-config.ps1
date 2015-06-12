@@ -28,8 +28,8 @@
 
 param($name, $value)
 
-. "$psscriptroot\..\lib\config.ps1"
-. "$psscriptroot\..\lib\help.ps1"
+. "$($env:SCOOPDIR)\..\lib\config.ps1"
+. "$($env:SCOOPDIR)\..\lib\help.ps1"
 
 reset_aliases
 

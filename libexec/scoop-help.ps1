@@ -2,9 +2,9 @@
 # Summary: Show help for a command
 param($cmd)
 
-. "$psscriptroot\..\lib\core.ps1"
-. "$psscriptroot\..\lib\commands.ps1"
-. "$psscriptroot\..\lib\help.ps1"
+. "$($env:SCOOPDIR)\..\lib\core.ps1"
+. "$($env:SCOOPDIR)\..\lib\commands.ps1"
+. "$($env:SCOOPDIR)\..\lib\help.ps1"
 
 reset_aliases
 

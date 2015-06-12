@@ -16,9 +16,9 @@
 #     scoop bucket add extras
 param($cmd, $name, $repo)
 
-. "$psscriptroot\..\lib\core.ps1"
-. "$psscriptroot\..\lib\buckets.ps1"
-. "$psscriptroot\..\lib\help.ps1"
+. "$($env:SCOOPDIR)\..\lib\core.ps1"
+. "$($env:SCOOPDIR)\..\lib\buckets.ps1"
+. "$($env:SCOOPDIR)\..\lib\help.ps1"
 
 reset_aliases
 

@@ -2,7 +2,26 @@ param($cmd)
 
 set-strictmode -off
 
-. "$psscriptroot\..\lib\core.ps1"
+function scriptdir {
+  $scriptDir = Get-Variable PSScriptRoot -ErrorAction SilentlyContinue | ForEach-Object { $_.Value }
+  if (!$scriptDir) {
+    if ($MyInvocation.MyCommand.Path) {
+      $scriptDir = Split-Path $MyInvocation.MyCommand.Path -Parent
+    }
+  }
+  if (!$scriptDir) {
+    if ($ExecutionContext.SessionState.Module.Path) {
+      $scriptDir = Split-Path (Split-Path $ExecutionContext.SessionState.Module.Path)
+    }
+  }
+  if (!$scriptDir) {
+    $scriptDir = $PWD
+  }
+  return $scriptDir
+}
+
+$env:SCOOPDIR = scriptdir
+. "$($env:SCOOPDIR)\..\lib\core.ps1"
 . (relpath '..\lib\commands')
 
 reset_aliases

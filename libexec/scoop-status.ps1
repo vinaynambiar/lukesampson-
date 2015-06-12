@@ -1,12 +1,12 @@
 # Usage: scoop status
 # Summary: Show status and check for new app versions
 
-. "$psscriptroot\..\lib\core.ps1"
-. "$psscriptroot\..\lib\manifest.ps1"
-. "$psscriptroot\..\lib\buckets.ps1"
-. "$psscriptroot\..\lib\versions.ps1"
-. "$psscriptroot\..\lib\depends.ps1"
-. "$psscriptroot\..\lib\config.ps1"
+. "$($env:SCOOPDIR)\..\lib\core.ps1"
+. "$($env:SCOOPDIR)\..\lib\manifest.ps1"
+. "$($env:SCOOPDIR)\..\lib\buckets.ps1"
+. "$($env:SCOOPDIR)\..\lib\versions.ps1"
+. "$($env:SCOOPDIR)\..\lib\depends.ps1"
+. "$($env:SCOOPDIR)\..\lib\config.ps1"
 
 reset_aliases
 
