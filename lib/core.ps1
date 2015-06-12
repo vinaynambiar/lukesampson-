@@ -197,7 +197,7 @@ function ensure_scoop_in_path($global) {
 }
 
 function ensure_robocopy_in_path {
-	if(!(gcm robocopy -ea ignore)) {
+	if(!(gcm robocopy -ea silentlycontinue)) {
 		shim "C:\Windows\System32\Robocopy.exe" $false
 	}
 }
