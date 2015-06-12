@@ -1,11 +1,9 @@
-#requires -v 3
-
 # remote install:
 #   iex (new-object net.webclient).downloadstring('https://get.scoop.sh')
 $erroractionpreference='stop' # quit if anything goes wrong
 
 # get core functions
-$core_url = 'https://raw.github.com/lukesampson/scoop/master/lib/core.ps1'
+$core_url = 'https://raw.github.com/lukesampson/scoop/powershell2/lib/core.ps1'
 echo 'initializing...'
 iex (new-object net.webclient).downloadstring($core_url)
 
@@ -18,7 +16,7 @@ if(installed 'scoop') {
 $dir = ensure (versiondir 'scoop' 'current')
 
 # download scoop zip
-$zipurl = 'https://github.com/lukesampson/scoop/archive/master.zip'
+$zipurl = 'https://github.com/lukesampson/scoop/archive/powershell2.zip'
 $zipfile = "$dir\scoop.zip"
 echo 'downloading...'
 dl $zipurl $zipfile

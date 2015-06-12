@@ -46,7 +46,24 @@ function ensure($dir) { if(!(test-path $dir)) { mkdir $dir > $null }; resolve-pa
 function fullpath($path) { # should be ~ rooted
 	$executionContext.sessionState.path.getUnresolvedProviderPathFromPSPath($path)
 }
-function relpath($path) { "$($myinvocation.psscriptroot)\$path" } # relative to calling script
+function scriptdir {
+	$scriptDir = Get-Variable PSScriptRoot -ErrorAction SilentlyContinue | ForEach-Object { $_.Value }
+	if (!$scriptDir) {
+		if ($MyInvocation.MyCommand.Path) {
+			$scriptDir = Split-Path $MyInvocation.MyCommand.Path -Parent
+		}
+	}
+	if (!$scriptDir) {
+		if ($ExecutionContext.SessionState.Module.Path) {
+			$scriptDir = Split-Path (Split-Path $ExecutionContext.SessionState.Module.Path)
+		}
+	}
+	if (!$scriptDir) {
+		$scriptDir = $PWD
+	}
+	return $scriptDir
+}
+function relpath($path) { "$(scriptdir)\$path" } # relative to calling script
 function friendly_path($path) {
 	$h = $home; if(!$h.endswith('\')) { $h += '\' }
 	return "$path" -replace ([regex]::escape($h)), "~\"
@@ -75,7 +92,7 @@ function unzip($path,$to) {
 		[io.compression.zipfile]::extracttodirectory($path,$to)
 	} catch [system.io.pathtoolongexception] {
 		# try to fall back to 7zip if path is too long
-		if(7zip_installed) {
+		if(&7zip_installed) {
 			extract_7zip $path $to $false
 			return
 		} else {
@@ -224,7 +241,7 @@ $default_aliases = @{
 }
 
 function reset_alias($name, $value) {
-	if($existing = get-alias $name -ea ignore |? { $_.options -match 'readonly' }) {
+	if($existing = get-alias $name -ea silentlycontinue |? { $_.options -match 'readonly' }) {
 		if($existing.definition -ne $value) {
 			write-host "alias $name is read-only; can't reset it" -f darkyellow
 		}

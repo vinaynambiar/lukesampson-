@@ -1,4 +1,3 @@
-#requires -v 3
 param($cmd)
 
 set-strictmode -off
