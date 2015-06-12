@@ -73,7 +73,7 @@ function rm_alias($name) {
 function list_aliases {
   $aliases = @{}
   (get_config $script:config_alias).getenumerator() |% { 
-    $summary = summary (gc (command_path $_.name) -raw)
+    $summary = summary (gc (command_path $_.name) -encoding ascii)
     if(!($summary)) { $summary = '' }
     $aliases.add("$($_.name) ", $summary)
   }

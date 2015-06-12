@@ -9,7 +9,7 @@ param($cmd)
 reset_aliases
 
 function print_help($cmd) {
-	$file = gc (command_path $cmd) -raw
+	$file = gc (command_path $cmd) -encoding ascii
 
 	$usage = usage $file
 	$summary = summary $file
@@ -24,7 +24,7 @@ function print_summaries {
 
 	command_files | % {
 		$command = command_name $_
-		$summary = summary (gc (command_path $command) -raw)
+		$summary = summary (gc (command_path $command) -encoding ascii)
 		if(!($summary)) { $summary = '' }
 		$commands.add("$command ", $summary) # add padding
 	}
