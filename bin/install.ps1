@@ -23,7 +23,7 @@ dl $zipurl $zipfile
 
 'extracting...'
 unzip $zipfile "$dir\_scoop_extract"
-cp "$dir\_scoop_extract\scoop-master\*" $dir -r -force
+cp "$dir\_scoop_extract\scoop-powershell2\*" $dir -r -force
 rm "$dir\_scoop_extract" -r -force
 rm $zipfile
 
