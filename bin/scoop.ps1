@@ -15,7 +15,7 @@ function scriptdir {
     }
   }
   if (!$scriptDir) {
-    $scriptDir = $PWD
+    $scriptDir = split-path ((get-variable MyInvocation -scope 1).value).mycommand.path
   }
   return $scriptDir
 }
