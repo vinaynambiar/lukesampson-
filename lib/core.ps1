@@ -63,7 +63,7 @@ function scriptdir {
 	}
 	return $scriptDir
 }
-function relpath($path) { "$(scriptdir)\$path" } # relative to calling script
+function relpath($path) { "$($env:SCOOPDIR)\$path" } # relative to calling script
 function friendly_path($path) {
 	$h = $home; if(!$h.endswith('\')) { $h += '\' }
 	return "$path" -replace ([regex]::escape($h)), "~\"
