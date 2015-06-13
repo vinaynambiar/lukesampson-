@@ -71,6 +71,23 @@ function friendly_path($path) {
 function is_local($path) {
 	($path -notmatch '^https?://') -and (test-path $path)
 }
+function scriptdir {
+  $scriptDir = Get-Variable PSScriptRoot -ErrorAction SilentlyContinue | ForEach-Object { $_.Value }
+  if (!$scriptDir) {
+    if ($MyInvocation.MyCommand.Path) {
+      $scriptDir = Split-Path $MyInvocation.MyCommand.Path -Parent
+    }
+  }
+  if (!$scriptDir) {
+    if ($ExecutionContext.SessionState.Module.Path) {
+      $scriptDir = Split-Path (Split-Path $ExecutionContext.SessionState.Module.Path)
+    }
+  }
+  if (!$scriptDir) {
+    $scriptDir = split-path ((get-variable MyInvocation -scope 1).value).mycommand.path
+  }
+  return $scriptDir
+}
 
 # operations
 function dl($url,$to) {

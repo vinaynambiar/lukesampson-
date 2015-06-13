@@ -9,9 +9,9 @@ iex (new-object net.webclient).downloadstring($core_url)
 
 # prep
 if(installed 'scoop') {
-	write-host "scoop is already installed. run 'scoop update' to get the latest version." -f red
-	# don't abort if invoked with iex——that would close the PS session
-	if($myinvocation.commandorigin -eq 'Internal') { return } else { exit 1 }
+  write-host "scoop is already installed. run 'scoop update' to get the latest version." -f red
+  # don't abort if invoked with iex——that would close the PS session
+  if($myinvocation.commandorigin -eq 'Internal') { return } else { exit 1 }
 }
 $dir = ensure (versiondir 'scoop' 'current')
 
@@ -27,8 +27,14 @@ cp "$dir\_scoop_extract\scoop-powershell2\*" $dir -r -force
 rm "$dir\_scoop_extract" -r -force
 rm $zipfile
 
-echo 'creating shim...'
+echo 'getting jq...'
+$jqUrl = "https://github.com/stedolan/jq/releases/download/jq-1.5rc1/jq-win32.exe"
+$jqDir = ensure (versiondir 'jq' '1.5rc1')
+dl $jqUrl "$jqDir\jq.exe"
+
+echo 'creating shims...'
 shim "$dir\bin\scoop.ps1" $false
+shim "$jqDir\jq.exe" $false
 
 ensure_robocopy_in_path
 ensure_scoop_in_path
