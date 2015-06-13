@@ -457,8 +457,8 @@ function run_uninstaller($manifest, $architecture, $dir) {
 				$arg += '/qb-!'
 			}
 
-			$continue_exit_codes.1605 = 'not installed, skipping'
-			$continue_exit_codes.3010 = 'restart required'
+			$continue_exit_codes.'1605' = 'not installed, skipping'
+			$continue_exit_codes.'3010' = 'restart required'
 		} elseif($uninstaller) {
 			$exe = "$dir\$($uninstaller.file)"
 			$arg = args $uninstaller.args
