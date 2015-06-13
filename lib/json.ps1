@@ -6,3 +6,16 @@ function get_json_field($name, $json) {
   }
   $val
 }
+
+function set_json_field($name, $val, $json) {
+  if (!$json) { $json = "{}" }
+
+  if($val -eq $null) {
+    #$json = $json | jq "del(.$name)"
+  }
+  else {
+    $json = $json | jq ". += {${name}: \`"$val\`"}"
+  }
+
+  $json
+}

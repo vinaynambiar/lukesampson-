@@ -69,6 +69,7 @@ function manifest($app, $bucket, $url) {
 	$manifest.checkver = get_json_field "checkver" $json
 	$manifest.architecture = manifest_arch (get_json_field "architecture" $json)
 	$manifest.depends = get_json_field "depends" $json
+	$manifest.url = get_json_field "url" $json
 
 	$manifest
 }
@@ -86,7 +87,12 @@ function save_install_info($info, $dir) {
 	$nulls = $info.keys | ? { $info[$_] -eq $null }
 	$nulls | % { $info.remove($_) } # strip null-valued
 
-	$info | convertto-json | out-file "$dir\install.json"
+	$json = $null
+	foreach ($key in $info.keys) {
+		$json = set_json_field($key, $info[$key], $json)
+	}
+
+	$json | out-file "$dir\install.json"
 }
 
 function install_info($app, $version, $global) {
