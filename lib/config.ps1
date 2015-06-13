@@ -1,10 +1,12 @@
+. "${env:SCOOPDIR}\..\lib\json.ps1"
+
 $cfgpath = "~/.scoop"
 if(!(test-path $cfgpath)) {
 	"{}" | out-file $cfgpath -encoding utf8
 } 
 
 function get_config($name) {
-	return jq ".$name" (resolve-path $cfgpath)
+	get_json_field $name (gc $cfgpath)
 }
 
 function set_config($name, $val) {
@@ -21,6 +23,7 @@ function set_config($name, $val) {
 # setup proxy
 $p = get_config 'proxy'
 if($p) {
+	write-debug "proxy found"
 	try {
 		$cred, $address = $p -split '@'
 		if(!$address) {

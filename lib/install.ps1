@@ -7,6 +7,8 @@ function nightly_version($date, $quiet = $false) {
 }
 
 function install_app($app, $architecture, $global) {
+	write-debug "entering install app..."
+
 	$app, $manifest, $bucket, $url = locate $app
 	$use_cache = $true
 	$check_hash = $true
@@ -31,6 +33,7 @@ function install_app($app, $architecture, $global) {
 
 	$dir = ensure (versiondir $app $version $global)
 
+	write-debug "downloading $app"
 	$fname = dl_urls $app $version $manifest $architecture $dir $use_cache $check_hash
 	unpack_inno $fname $manifest $dir
 	pre_install $manifest
@@ -113,8 +116,9 @@ function dl_progress($url, $to, $cookies) {
 	$wc.headers.add('User-Agent', 'Scoop/1.0')
 	$wc.headers.add('Cookie', (cookie_header $cookies))
 
-	if([console]::isoutputredirected) {
+	if([console]::isoutputredirected -or $true) {
 		# can't set cursor position: just do simple download
+		write-debug "downloading $url to $to"
 		$wc.downloadfile($url, $to)
 		return
 	}
@@ -179,7 +183,7 @@ function dl_urls($app, $version, $manifest, $architecture, $dir, $use_cache = $t
 	$extracted = 0;
 
 	foreach($url in $urls) {
-		$fname = split-path $url -leaf
+		$fname =  $url.substring($url.LastIndexOf('/') + 1)
 
 		dl_with_cache $app $version $url "$dir\$fname" $cookies $use_cache
 

@@ -1,3 +1,18 @@
+. "${env:SCOOPDIR}\..\lib\json.ps1"
+
+function empty_manifest {
+    @{ 
+    	"homepage" = ""; 
+    	"license" = ""; 
+    	"version" = ""; 
+    	"url" = "";
+      "hash" = ""; 
+      "extract_dir" = ""; 
+      "bin" = ""; 
+      "depends" = "" 
+    }
+}
+
 function manifest_path($app, $bucket) {
 	"$(bucketdir $bucket)\$app.json"
 }
@@ -6,6 +21,8 @@ function parse_json($path) {
 	if(!(test-path $path)) { return $null }
 	gc $path -encoding ascii | convertfrom-json -ea stop
 }
+
+
 
 function url_manifest($url) {
 	$str = $null
@@ -20,9 +37,40 @@ function url_manifest($url) {
 	$str | convertfrom-json
 }
 
+function manifest_arch($json_arch) {
+	$arch = @{}
+	$archs = "32bit", "64bit"
+
+	foreach ($arch_str in $archs) {
+		if(($json_arch | jq "has(\`"$arch_str\`")") -eq "true") {
+			write-debug "has $arch_str"
+			$json_fragment = $json_arch | jq ".\`"$arch_str\`""
+			$arch."$arch_str" = @{
+				"url" = get_json_field "url" $json_fragment
+				"hash" = get_json_field "hash" $json_fragment
+			}
+		}
+	}
+
+	$arch
+}
+
 function manifest($app, $bucket, $url) {
 	if($url) { return url_manifest $url }
-	parse_json (manifest_path $app $bucket)
+	$path = manifest_path $app $bucket
+
+	$json = gc $path
+	$manifest = empty_manifest
+	$manifest.homepage = get_json_field "homepage" $json
+	$manifest.license = get_json_field "license" $json
+	$manifest.version = get_json_field "version" $json
+	$manifest.extract_dir = get_json_field "extract_dir" $json
+	$manifest.bin = get_json_field "bin" $json
+	$manifest.checkver = get_json_field "checkver" $json
+	$manifest.architecture = manifest_arch (get_json_field "architecture" $json)
+	$manifest.depends = get_json_field "depends" $json
+
+	$manifest
 }
 
 function save_installed_manifest($app, $bucket, $dir, $url) {
