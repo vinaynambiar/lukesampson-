@@ -18,7 +18,7 @@ function url_manifest($url) {
 		throw
 	}
 	if(!$str) { return $null }
-	$str | convertfrom-json
+	json_to_hashtable $str
 }
 
 function manifest($app, $bucket, $url) {

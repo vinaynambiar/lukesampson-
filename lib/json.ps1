@@ -29,33 +29,37 @@ function json_type($json) {
 }
 
 function json_array($json) {
-  $json_arr = $json | jq 'reduce .[] as $item (\"\"; . + $item + \" \")'
-  $arr = (iex $json_arr).trim().split(' ')
+  $arr = @()
+  $count = $json | jq length
+
+  for($i=0; $i -lt $count; $i++) {
+    $val = $json | jq ".[$i]"
+    $arr += json_to_hashtable $val
+  }
   $arr
 }
 
 function json_to_hashtable($json) {
-  $keys = json_keys($json)
+  $obj_type = json_type $json
+  switch ($obj_type) {
+    "object" {
+      $keys = json_keys($json)
+      $result = @{}
 
-  $result = @{}
-  foreach ($key in $keys) {
-    # get the type of the value
-    $val = json_get $key $json
-    $type = json_type $val
-
-    # if it's an object
-    # recurse
-    if ($type -eq "object") {
-      $result.$key = json_to_hashtable $val
+      foreach ($key in $keys) {
+        # get the type of the value
+        $val = json_get $key $json
+        $result.$key = json_to_hashtable $val
+      }
     }
-    elseif ($type -eq "string") {
-      $result.$key = iex $val
+    "array" {
+      $result = json_array $json
     }
-    elseif ($type -eq "array") {
-      $result.$key = json_array $val
+    "string" {
+      $result = iex $json
     }
-    else {
-      $result.$key = $val
+    default {
+      $result = $json
     }
   }
 
