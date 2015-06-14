@@ -22,6 +22,7 @@ function url_manifest($url) {
 }
 
 function manifest($app, $bucket, $url) {
+	write-debug "loading manifest for $app"
 	if($url) { return url_manifest $url }
 	$path = manifest_path $app $bucket
 

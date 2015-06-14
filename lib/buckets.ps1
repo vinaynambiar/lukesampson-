@@ -1,3 +1,5 @@
+. "${env:SCOOPDIR}\..\lib\manifest.ps1"
+
 $bucketsdir = "$scoopdir\buckets"
 
 function bucketdir($name) {
@@ -8,8 +10,8 @@ function bucketdir($name) {
 
 function known_bucket_repo($name) {
 	$dir = versiondir 'scoop' 'current'
-	$json = resolve-path "$dir\buckets.json"
-	jq .name $json
+	$buckets = parse_json (resolve-path "$dir\buckets.json")
+	$buckets.$name
 }
 
 function apps_in_bucket($dir) {

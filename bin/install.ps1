@@ -28,8 +28,8 @@ rm "$dir\_scoop_extract" -r -force
 rm $zipfile
 
 echo 'getting jq...'
-$jqUrl = "https://github.com/stedolan/jq/releases/download/jq-1.5rc1/jq-win32.exe"
-$jqDir = ensure (versiondir 'jq' '1.5rc1')
+$jqUrl = "http://stedolan.github.io/jq/download/win32/jq.exe"
+$jqDir = ensure (versiondir 'jq' '1.4')
 dl $jqUrl "$jqDir\jq.exe"
 
 echo 'creating shims...'
