@@ -5,19 +5,17 @@ if(!(test-path $cfgpath)) {
 	"{}" | out-file $cfgpath -encoding utf8
 } 
 
+$cfg = json_to_hashtable (gc $cfgpath)
+
 function get_config($name) {
-	get_json_field $name (gc $cfgpath)
+	$cfg.$name
 }
 
 function set_config($name, $val) {
-	if($val -eq $null) {
-		$cfg = jq "del(.$name)" (resolve-path $cfgpath)
-	}
-	else {
-		$cfg = jq ". += {${name}: \`"$val\`"}" (resolve-path $cfgpath)
-	}
+	$json = (gc $cfgpath)
+	$json = json_set $name $val $json
 
-	$cfg | out-file $cfgpath -encoding utf8
+	$json | out-file $cfgpath -encoding utf8
 }
 
 # setup proxy

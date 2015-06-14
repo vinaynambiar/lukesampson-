@@ -116,7 +116,7 @@ function dl_progress($url, $to, $cookies) {
 	$wc.headers.add('User-Agent', 'Scoop/1.0')
 	$wc.headers.add('Cookie', (cookie_header $cookies))
 
-	if([console]::isoutputredirected -or $true) {
+	if([console]::isoutputredirected) {
 		# can't set cursor position: just do simple download
 		write-debug "downloading $url to $to"
 		$wc.downloadfile($url, $to)
