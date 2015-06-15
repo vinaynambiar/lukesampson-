@@ -29,12 +29,12 @@ function json_type($json) {
 }
 
 function json_array($json) {
-  $arr = @()
+  $arr = [system.collections.arraylist]@()
   $count = $json | jq length
 
   for($i=0; $i -lt $count; $i++) {
-    $val = $json | jq ".[$i]"
-    $arr += json_to_hashtable $val
+    $val = json_to_hashtable ($json | jq ".[$i]")
+    $null = $arr.add($val)
   }
   $arr
 }
