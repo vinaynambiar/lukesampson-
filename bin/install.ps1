@@ -38,5 +38,8 @@ shim "$jqDir\jq.exe" $false
 
 ensure_robocopy_in_path
 ensure_scoop_in_path
+
+$null = scoop config SCOOP_BRANCH powershell2
+
 success 'scoop was installed successfully!'
 echo "type 'scoop help' for instructions"
