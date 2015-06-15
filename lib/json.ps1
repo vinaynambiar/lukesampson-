@@ -39,6 +39,29 @@ function json_array($json) {
   $arr
 }
 
+$script:escape_codes = @{
+  "\0" = "`0";
+  "\a" = "`a";
+  "\b" = "`b";
+  "\f" = "`f";
+  "\n" = "`n"; 
+  "\r" = "`r";
+  "\t" = "`t";
+  "\v" = "`v";
+  '\"' = '"'
+}
+$script:powershell_escape = "``"
+$script:json_escape = "\"
+function json_string($json) {
+  $result = $json.substring(1, $json.length - 2)
+  foreach($key in $escape_codes.keys) {
+    $result = $result.replace($key, $escape_codes.$key)
+  }
+
+  $result
+}
+
+
 function json_to_hashtable($json) {
   $obj_type = json_type $json
   switch ($obj_type) {
@@ -56,7 +79,7 @@ function json_to_hashtable($json) {
       $result = json_array $json
     }
     "string" {
-      $result = iex $json
+      $result = json_string $json
     }
     default {
       $result = $json
