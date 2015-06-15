@@ -4,6 +4,7 @@ param($app, $dir)
 
 . "${env:SCOOPDIR}\..\lib\core.ps1"
 . "${env:SCOOPDIR}\..\lib\manifest.ps1"
+. "${env:SCOOPDIR}\..\lib\json.ps1"
 . "${env:SCOOPDIR}\..\lib\config.ps1"
 
 if(!$dir) { $dir = "$($env:SCOOPDIR)\..\bucket" }

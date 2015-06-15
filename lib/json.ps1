@@ -88,3 +88,7 @@ function json_to_hashtable($json) {
 
   $result
 }
+
+function parse_json($path) {
+  json_to_hashtable (gc $path)
+}

@@ -1,4 +1,5 @@
 . "${env:SCOOPDIR}\..\lib\manifest.ps1"
+. "${env:SCOOPDIR}\..\lib\json.ps1"
 
 $bucketsdir = "$scoopdir\buckets"
 

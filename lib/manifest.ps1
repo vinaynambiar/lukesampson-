@@ -1,9 +1,5 @@
 . "${env:SCOOPDIR}\..\lib\json.ps1"
 
-function parse_json($path) {
-	json_to_hashtable (gc $path)
-}
-
 function manifest_path($app, $bucket) {
 	"$(bucketdir $bucket)\$app.json"
 }
