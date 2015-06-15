@@ -22,8 +22,10 @@ function success($msg) { write-host $msg -f darkgreen }
 # dirs
 function basedir($global) {	if($global) { return $globaldir } $scoopdir }
 function appsdir($global) { "$(basedir $global)\apps" }
+function libsdir($global) { "$(basedir $global)\libs" }
 function shimdir($global) { "$(basedir $global)\shims" }
 function appdir($app, $global) { "$(appsdir $global)\$app" }
+function libdir($lib, $global) { "$(libsdir $global)\$lib" }
 function versiondir($app, $version, $global) { "$(appdir $app $global)\$version" }
 
 # apps
