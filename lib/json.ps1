@@ -25,7 +25,7 @@ function json_keys($json) {
 }
 
 function json_type($json) {
-  iex ($json | jq 'type')
+  json_string ($json | jq 'type')
 }
 
 function json_array($json) {
@@ -53,6 +53,8 @@ $script:escape_codes = @{
 $script:powershell_escape = "``"
 $script:json_escape = "\"
 function json_string($json) {
+  if ($json -eq $null) { return "" }
+
   $result = $json.substring(1, $json.length - 2)
   foreach($key in $escape_codes.keys) {
     $result = $result.replace($key, $escape_codes.$key)
@@ -61,7 +63,6 @@ function json_string($json) {
   $result
 }
 
-
 function json_to_hashtable($json) {
   $obj_type = json_type $json
   switch ($obj_type) {
@@ -69,10 +70,12 @@ function json_to_hashtable($json) {
       $keys = json_keys($json)
       $result = @{}
 
-      foreach ($key in $keys) {
-        # get the type of the value
-        $val = json_get $key $json
-        $result.$key = json_to_hashtable $val
+      if ($keys) {
+        foreach ($key in $keys) {
+          # get the type of the value
+          $val = json_get $key $json
+          $result.$key = json_to_hashtable $val
+        }
       }
     }
     "array" {
@@ -90,7 +93,7 @@ function json_to_hashtable($json) {
 }
 
 function json($json) {
-  json_to_hashtable $json
+  json_to_hashtable ($json | out-string)
 }
 
 function parse_json($path) {
