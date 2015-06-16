@@ -27,14 +27,26 @@ cp "$dir\_scoop_extract\scoop-powershell2\*" $dir -r -force
 rm "$dir\_scoop_extract" -r -force
 rm $zipfile
 
-$jsonZipUrl = "http://stedolan.github.io/jq/download/win32/jq.exe"
-$jsonDir = ensure (libdir "json")
-echo 'downloading json library...'
-dl $jsonZipUrl "$jsonDir\jq.exe"
+echo 'getting json libraries...'
+$jqDlUrl = "http://stedolan.github.io/jq/download/win32/jq.exe"
+$jqDir = ensure (libdir "jq")
+echo 'downloading jq...'
+dl $jqDlUrl "$jqDir\jq.exe"
+
+$ctDlUrl = "http://nuget.org/api/v2/package/codetitans-json/1.8.3"
+$ctZipFile = "$dir\json.zip"
+$ctDir = ensure (libdir "codetitans-json")
+echo 'downloading codetitans-json...'
+dl $ctDlUrl $ctZipFile
+echo 'extracting codetitans-json...'
+unzip $ctZipFile "$dir\_json_extract"
+cp "$dir\_json_extract\lib\net20\*" $ctDir -r -force
+rm "$dir\_json_extract" -r -force
+rm $ctZipFile
 
 echo 'creating shims...'
 shim "$dir\bin\scoop.ps1" $false
-shim "$jsonDir\jq.exe" $false "jq1.4"
+shim "$jqDir\jq.exe" $false "jq-1.4"
 
 ensure_robocopy_in_path
 ensure_scoop_in_path

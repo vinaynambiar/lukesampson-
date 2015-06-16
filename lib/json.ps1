@@ -92,10 +92,27 @@ function json_to_hashtable($json) {
   $result
 }
 
-function json($json) {
-  json_to_hashtable ($json | out-string)
+function load_codetitans {
+  add-type -path "$(libdir "codetitans-json")\codetitans.json.dll"
+}
+
+function json($obj) {
+  load_codetitans
+  $writer = new-object codetitans.json.jsonwriter
+  $writer.write($obj)
+  $writer.tostring()
 }
 
 function parse_json($path) {
-  json (gc $path)
+  $json = gc $path | out-string
+  try {
+    write-debug "trying codetitans"
+    load_codetitans
+    $reader = new-object codetitans.json.jsonreader
+    $reader.read($json)
+  }
+  catch {
+    write-debug "reverting to jq"
+    json_to_hashtable $json
+  }
 }
