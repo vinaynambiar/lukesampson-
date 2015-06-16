@@ -484,7 +484,7 @@ function run_uninstaller($manifest, $architecture, $dir) {
 
 # get target, name, arguments for shim
 function shim_def($item) {
-	if($item -is [array]) { return $item }
+	if($item -is [array] -or $item -is [system.collections.arraylist]) { return $item }
 	return $item, (strip_ext (fname $item)), $null
 }
 
