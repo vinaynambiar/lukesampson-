@@ -119,6 +119,8 @@ function json($obj) {
 }
 
 function parse_json($path) {
+  if(!(test-path $path)) { return $null }
+
   $json = gc $path | out-string
   try {
     write-debug "trying codetitans"

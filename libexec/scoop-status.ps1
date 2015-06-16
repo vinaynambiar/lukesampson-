@@ -40,7 +40,7 @@ $true, $false | % { # local and global apps
 	$dir = appsdir $global
 	if(!(test-path $dir)) { return }
 
-	gci $dir | ? name -ne 'scoop' | % {
+	gci $dir | ? { $_.name -ne 'scoop' } | % {
 		$app = $_.name
 		$version = current_version $app $global
 		if($version) {

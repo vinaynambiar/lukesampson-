@@ -35,13 +35,14 @@ function installed_manifest($app, $version, $global) {
 }
 
 function save_install_info($info, $dir) {
-	$nulls = $info.keys | ? { $info[$_] -eq $null }
+	$nulls = $info.keys | ? { [string]::isnullorempty($info[$_]) }
 	$nulls | % { $info.remove($_) } # strip null-valued
 
 	json $info | out-file "$dir\install.json"
 }
 
 function install_info($app, $version, $global) {
+	write-debug "loading install info for $app"
 	$path = "$(versiondir $app $version $global)\install.json"
 	if(!(test-path $path)) { return $null }
 

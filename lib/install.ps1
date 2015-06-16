@@ -47,7 +47,7 @@ function install_app($app, $architecture, $global) {
 
 	# save info for uninstall
 	save_installed_manifest $app $bucket $dir $url
-	save_install_info @{ 'architecture' = $architecture; 'url' = $url; 'bucket' = $bucket } $dir
+	save_install_info @{ 'architecture' = "$architecture"; 'url' = "$url"; 'bucket' = "$bucket" } $dir
 
 	success "$app ($version) was installed successfully!"
 

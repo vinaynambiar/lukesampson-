@@ -123,7 +123,7 @@ function update($app, $global, $quiet = $false) {
 
 	# save info for uninstall
 	save_installed_manifest $app $bucket $dir $url
-	save_install_info @{ 'architecture' = $architecture; 'url' = $url; 'bucket' = $bucket } $dir
+	save_install_info @{ 'architecture' = "$architecture"; 'url' = "$url"; 'bucket' = "$bucket" } $dir
 
 	$fname = dl_urls $app $version $manifest $architecture $dir $use_cache $check_hash
 	unpack_inno $fname $manifest $dir
