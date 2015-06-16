@@ -71,10 +71,25 @@ function json_to_hashtable($json) {
       $result = @{}
 
       if ($keys) {
+        $jobs = new-object system.collections.arraylist
         foreach ($key in $keys) {
-          # get the type of the value
-          $val = json_get $key $json
-          $result.$key = json_to_hashtable $val
+          $job = start-job -argumentlist @($json, $key) -scriptblock {
+            param($json, $key)
+            . "${env:SCOOPDIR}\..\lib\core.ps1"
+            . "${env:SCOOPDIR}\..\lib\json.ps1"
+            set-alias jq "jq-1.4"
+
+            # get the type of the value
+            $val = json_get $key $json
+            $key, (json_to_hashtable $val)
+          }
+          $null = $jobs.add($job)
+        } 
+
+        foreach ($job in $jobs) {
+          $null = wait-job $job
+          $key, $val = receive-job $job
+          $result.$key = $val
         }
       }
     }
