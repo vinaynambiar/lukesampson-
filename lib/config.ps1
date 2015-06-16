@@ -5,17 +5,21 @@ if(!(test-path $cfgpath)) {
 	"{}" | out-file $cfgpath -encoding utf8
 } 
 
-$cfg = json_to_hashtable (gc $cfgpath)
+$cfg = parse_json $cfgpath
 
 function get_config($name) {
 	$cfg.$name
 }
 
 function set_config($name, $val) {
-	$json = (gc $cfgpath)
-	$json = json_set $name $val $json
+	if ($val -eq $null) {
+		$null = $cfg.remove($name)
+	}
+	else {
+		$cfg.$name = $val
+	}
 
-	$json | out-file $cfgpath -encoding utf8
+	json $cfg | out-file $cfgpath -encoding utf8
 }
 
 # setup proxy

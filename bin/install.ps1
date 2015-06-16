@@ -27,14 +27,14 @@ cp "$dir\_scoop_extract\scoop-powershell2\*" $dir -r -force
 rm "$dir\_scoop_extract" -r -force
 rm $zipfile
 
-echo 'getting jq...'
-$jqUrl = "http://stedolan.github.io/jq/download/win32/jq.exe"
-$jqDir = ensure (versiondir 'jq' '1.4')
-dl $jqUrl "$jqDir\jq.exe"
+$jsonZipUrl = "http://stedolan.github.io/jq/download/win32/jq.exe"
+$jsonDir = ensure (libdir "json")
+echo 'downloading json library...'
+dl $jsonZipUrl "$jsonDir\jq.exe"
 
 echo 'creating shims...'
 shim "$dir\bin\scoop.ps1" $false
-shim "$jqDir\jq.exe" $false
+shim "$jsonDir\jq.exe" $false "jq1.4"
 
 ensure_robocopy_in_path
 ensure_scoop_in_path

@@ -257,6 +257,7 @@ $default_aliases = @{
 	'sc' = 'set-content'
 	'select' = 'select-object'
 	'sls' = 'select-string'
+	'jq' = 'jq1.4'
 }
 
 function reset_alias($name, $value) {

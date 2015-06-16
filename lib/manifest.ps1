@@ -38,13 +38,7 @@ function save_install_info($info, $dir) {
 	$nulls = $info.keys | ? { $info[$_] -eq $null }
 	$nulls | % { $info.remove($_) } # strip null-valued
 
-	$json = $null
-	foreach ($key in $info.keys) {
-		$val = $info."$key"
-		$json = json_set $key $val $json
-	}
-
-	$json | out-file "$dir\install.json"
+	json $info | out-file "$dir\install.json"
 }
 
 function install_info($app, $version, $global) {
